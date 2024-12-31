@@ -27,42 +27,6 @@ interface SensorData {
 const Dashboard = () => {
   const [sensorData, setSensorData] = useState<SensorData[]>([]);
 
-  // const generateRandomData = () => {
-  //   const now = new Date();
-  //   const timestamp = new Date(
-  //     now.getTime() - Math.random() * 5 * 60 * 60 * 1000
-  //   ).toISOString();
-  //   return {
-  //     id: Math.floor(Math.random() * 1000),
-  //     temperatura_ambiente: parseFloat((Math.random() * 50).toFixed(1)), // 0-50 grados
-  //     humedad_relativa: parseFloat((Math.random() * 100).toFixed(1)), // 0-100%
-  //     tempSensor1: parseFloat((Math.random() * 100 - 50).toFixed(1)), // -50 a 50 grados
-  //     tempSensor2: parseFloat((Math.random() * 100 - 50).toFixed(1)), // -50 a 50 grados
-  //     co2: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
-  //     tds1: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
-  //     tds2: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
-  //     ph1: parseFloat((Math.random() * 14).toFixed(1)), // 0-14 pH
-  //     ph2: parseFloat((Math.random() * 14).toFixed(1)), // 0-14 pH
-  //     dispositivo: `dispositivo_${Math.floor(Math.random() * 10) + 1}`,
-  //     mq2_estado: Math.random() > 0.5 ? "ON" : "OFF",
-  //     timestamp,
-  //   };
-  // };
-  // useEffect(() => {
-  //   // Generar datos iniciales
-  //   const initialData = Array.from({ length: 100 }, () => generateRandomData()); // 3600 puntos para 5 horas (1 cada 5 segundos)
-  //   setSensorData(initialData);
-
-  //   // Actualizar datos cada 5 segundos
-  //   const interval = setInterval(() => {
-  //     setSensorData((prevData) => {
-  //       const newData = [...prevData.slice(1), generateRandomData()]; // Eliminar el primero, agregar uno nuevo
-  //       return newData;
-  //     });
-  //   }, 5000);
-
-  //   return () => clearInterval(interval); // Limpia el intervalo al desmontar
-  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -91,20 +55,16 @@ const Dashboard = () => {
       ? sensorData[sensorData.length - 1].humedad_relativa
       : 0;
 
-  const co2Data = sensorData.map((item) => ({
-    timestamp: new Date(item.timestamp).toLocaleTimeString(),
-    value: item.co2,
-  }));
+  const co2Data =
+    sensorData.length > 0 ? sensorData[sensorData.length - 1].co2 : 0;
 
   const tdsData = sensorData.map((item) => ({
     timestamp: new Date(item.timestamp).toLocaleTimeString(),
     value: item.tds1,
   }));
 
-  const phData = sensorData.map((item) => ({
-    timestamp: new Date(item.timestamp).toLocaleTimeString(),
-    value: item.ph1,
-  }));
+  const phData =
+    sensorData.length > 0 ? sensorData[sensorData.length - 1].ph1 : 7;
 
   return (
     <div className="relative bg-gray-50 min-h-screen flex flex-col items-center">
@@ -120,10 +80,10 @@ const Dashboard = () => {
           <Temperatura data={temperaturaData} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <Ph />
+          <Ph value={phData} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <Co2 />
+          <Co2 value={co2Data} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <Humedad value={humedadData} />
