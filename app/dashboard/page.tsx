@@ -97,7 +97,7 @@ const Dashboard = () => {
           <TemperaturaAmbiente temperature={temperaturaAmbienteData} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <Tds />
+          <Tds data={tdsData} />
         </div>
       </div>
     </div>

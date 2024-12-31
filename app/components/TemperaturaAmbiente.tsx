@@ -25,7 +25,7 @@ const TemperaturaAmbiente: React.FC<TemperaturaAmbienteProps> = ({
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center">
+    <>
       <h2 className="text-xl font-bold text-gray-800 mb-4">
         Temperatura Ambiente
       </h2>
@@ -52,7 +52,7 @@ const TemperaturaAmbiente: React.FC<TemperaturaAmbienteProps> = ({
       <p className="text-lg font-semibold text-gray-700 mt-4">
         {temperature.toFixed(1)}°C
       </p>
-    </div>
+    </>
   );
 };
 
