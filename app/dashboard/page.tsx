@@ -27,64 +27,64 @@ interface SensorData {
 const Dashboard = () => {
   const [sensorData, setSensorData] = useState<SensorData[]>([]);
 
-  const generateRandomData = () => {
-    const now = new Date();
-    const timestamp = new Date(
-      now.getTime() - Math.random() * 5 * 60 * 60 * 1000
-    ).toISOString();
-    return {
-      id: Math.floor(Math.random() * 1000),
-      temperatura_ambiente: parseFloat((Math.random() * 50).toFixed(1)), // 0-50 grados
-      humedad_relativa: parseFloat((Math.random() * 100).toFixed(1)), // 0-100%
-      tempSensor1: parseFloat((Math.random() * 100 - 50).toFixed(1)), // -50 a 50 grados
-      tempSensor2: parseFloat((Math.random() * 100 - 50).toFixed(1)), // -50 a 50 grados
-      co2: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
-      tds1: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
-      tds2: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
-      ph1: parseFloat((Math.random() * 14).toFixed(1)), // 0-14 pH
-      ph2: parseFloat((Math.random() * 14).toFixed(1)), // 0-14 pH
-      dispositivo: `dispositivo_${Math.floor(Math.random() * 10) + 1}`,
-      mq2_estado: Math.random() > 0.5 ? "ON" : "OFF",
-      timestamp,
-    };
-  };
-  useEffect(() => {
-    // Generar datos iniciales
-    const initialData = Array.from({ length: 100 }, () => generateRandomData()); // 3600 puntos para 5 horas (1 cada 5 segundos)
-    setSensorData(initialData);
-
-    // Actualizar datos cada 5 segundos
-    const interval = setInterval(() => {
-      setSensorData((prevData) => {
-        const newData = [...prevData.slice(1), generateRandomData()]; // Eliminar el primero, agregar uno nuevo
-        return newData;
-      });
-    }, 5000);
-
-    return () => clearInterval(interval); // Limpia el intervalo al desmontar
-  }, []);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:8080/sensor/find/all");
-  //       const data = await response.json();
-  //       setSensorData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
+  // const generateRandomData = () => {
+  //   const now = new Date();
+  //   const timestamp = new Date(
+  //     now.getTime() - Math.random() * 5 * 60 * 60 * 1000
+  //   ).toISOString();
+  //   return {
+  //     id: Math.floor(Math.random() * 1000),
+  //     temperatura_ambiente: parseFloat((Math.random() * 50).toFixed(1)), // 0-50 grados
+  //     humedad_relativa: parseFloat((Math.random() * 100).toFixed(1)), // 0-100%
+  //     tempSensor1: parseFloat((Math.random() * 100 - 50).toFixed(1)), // -50 a 50 grados
+  //     tempSensor2: parseFloat((Math.random() * 100 - 50).toFixed(1)), // -50 a 50 grados
+  //     co2: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
+  //     tds1: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
+  //     tds2: parseFloat((Math.random() * 2000).toFixed(1)), // 0-2000 ppm
+  //     ph1: parseFloat((Math.random() * 14).toFixed(1)), // 0-14 pH
+  //     ph2: parseFloat((Math.random() * 14).toFixed(1)), // 0-14 pH
+  //     dispositivo: `dispositivo_${Math.floor(Math.random() * 10) + 1}`,
+  //     mq2_estado: Math.random() > 0.5 ? "ON" : "OFF",
+  //     timestamp,
   //   };
+  // };
+  // useEffect(() => {
+  //   // Generar datos iniciales
+  //   const initialData = Array.from({ length: 100 }, () => generateRandomData()); // 3600 puntos para 5 horas (1 cada 5 segundos)
+  //   setSensorData(initialData);
 
-  //   fetchData();
-
-  //   const interval = setInterval(fetchData, 5000);
+  //   // Actualizar datos cada 5 segundos
+  //   const interval = setInterval(() => {
+  //     setSensorData((prevData) => {
+  //       const newData = [...prevData.slice(1), generateRandomData()]; // Eliminar el primero, agregar uno nuevo
+  //       return newData;
+  //     });
+  //   }, 5000);
 
   //   return () => clearInterval(interval); // Limpia el intervalo al desmontar
   // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/sensor/find/all");
+        const data = await response.json();
+        setSensorData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 5000);
+
+    return () => clearInterval(interval); // Limpia el intervalo al desmontar
+  }, []);
+
   const temperaturaData = sensorData.map((item) => ({
     timestamp: new Date(item.timestamp).toLocaleTimeString(),
     value: item.temperatura_ambiente,
   }));
-  console.log(temperaturaData);
 
   const humedadData = sensorData.map((item) => ({
     timestamp: new Date(item.timestamp).toLocaleTimeString(),
