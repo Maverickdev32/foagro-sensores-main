@@ -66,6 +66,11 @@ const Dashboard = () => {
   const phData =
     sensorData.length > 0 ? sensorData[sensorData.length - 1].ph1 : 7;
 
+  const temperaturaAmbienteData =
+    sensorData.length > 0
+      ? sensorData[sensorData.length - 1].temperatura_ambiente
+      : 0;
+
   return (
     <div className="relative bg-gray-50 min-h-screen flex flex-col items-center">
       <Link
@@ -89,7 +94,7 @@ const Dashboard = () => {
           <Humedad value={humedadData} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <TemperaturaAmbiente />
+          <TemperaturaAmbiente temperature={temperaturaAmbienteData} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <Tds />

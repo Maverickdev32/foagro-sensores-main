@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -10,21 +9,23 @@ import {
   Cell,
 } from "recharts";
 
-interface ThermometerProps {
-  temperature: number;
+interface TemperaturaAmbienteProps {
+  temperature: number; // Último valor de temperatura
 }
 
-const Thermometer: React.FC<ThermometerProps> = ({ temperature }) => {
+const TemperaturaAmbiente: React.FC<TemperaturaAmbienteProps> = ({
+  temperature,
+}) => {
   const data = [{ name: "Temperatura", value: temperature }];
 
   const getColor = (temp: number): string => {
-    if (temp < 18) return "#00c6ff";
-    if (temp <= 37) return "#82ca9d";
-    return "#ff4d4f";
+    if (temp < 18) return "#00c6ff"; // Azul para temperaturas bajas
+    if (temp <= 37) return "#82ca9d"; // Verde para temperaturas normales
+    return "#ff4d4f"; // Rojo para temperaturas altas
   };
 
   return (
-    <>
+    <div className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center">
       <h2 className="text-xl font-bold text-gray-800 mb-4">
         Temperatura Ambiente
       </h2>
@@ -42,9 +43,7 @@ const Thermometer: React.FC<ThermometerProps> = ({ temperature }) => {
               style: { textAnchor: "middle" },
             }}
           />
-
           <XAxis type="category" dataKey="name" hide />
-
           <Bar dataKey="value" fill={getColor(temperature)} barSize={30}>
             <Cell key="bar" fill={getColor(temperature)} />
           </Bar>
@@ -53,23 +52,8 @@ const Thermometer: React.FC<ThermometerProps> = ({ temperature }) => {
       <p className="text-lg font-semibold text-gray-700 mt-4">
         {temperature.toFixed(1)}°C
       </p>
-    </>
+    </div>
   );
-};
-
-const TemperaturaAmbiente: React.FC = () => {
-  const [temperatura, setTemperatura] = useState<number>(25);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const nuevaTemperatura = Math.random() * 50;
-      setTemperatura(nuevaTemperatura);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return <Thermometer temperature={temperatura} />;
 };
 
 export default TemperaturaAmbiente;
