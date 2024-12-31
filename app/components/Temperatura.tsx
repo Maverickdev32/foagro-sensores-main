@@ -9,12 +9,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { timestamp: "22:28", temperature: 13.81 },
-  { timestamp: "22:29", temperature: 12.75 },
-  { timestamp: "10:30", temperature: 24.37 },
-];
-
 interface TemperaturaProps {
   data: { timestamp: string; value: number }[];
 }
@@ -22,9 +16,7 @@ interface TemperaturaProps {
 export default function Temperatura({ data }: TemperaturaProps) {
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">
-        Temperatura Últimas 5 Horas
-      </h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4">Temperatura</h2>
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={data}>
           <XAxis
