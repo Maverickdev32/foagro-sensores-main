@@ -86,10 +86,10 @@ const Dashboard = () => {
     value: item.temperatura_ambiente,
   }));
 
-  const humedadData = sensorData.map((item) => ({
-    timestamp: new Date(item.timestamp).toLocaleTimeString(),
-    value: item.humedad_relativa,
-  }));
+  const humedadData =
+    sensorData.length > 0
+      ? sensorData[sensorData.length - 1].humedad_relativa
+      : 0;
 
   const co2Data = sensorData.map((item) => ({
     timestamp: new Date(item.timestamp).toLocaleTimeString(),
@@ -126,7 +126,7 @@ const Dashboard = () => {
           <Co2 />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <Humedad />
+          <Humedad value={humedadData} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <TemperaturaAmbiente />
