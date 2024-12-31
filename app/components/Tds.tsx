@@ -29,17 +29,20 @@ export default function Tds({ data }: TdsProps) {
             }}
           />
           <YAxis
-            domain={[0, 2000]} // Rango típico de TDS
+            domain={[0, 500]} // Rango típico de TDS
             tick={{ fontSize: 12 }}
             label={{
-              value: "TDS (ppm)",
+              value: "TDS (µS/cm)",
               angle: -90,
               position: "insideLeft",
               offset: 6,
               style: { textAnchor: "middle" },
             }}
           />
-          <Tooltip />
+          <Tooltip
+            formatter={(value: number) => value.toFixed(2)} // Muestra con 2 decimales
+            labelFormatter={(label: string) => `Hora: ${label}`} // Formato del timestamp
+          />
           <Area
             type="monotone"
             dataKey="value"
