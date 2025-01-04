@@ -102,29 +102,30 @@ const Dashboard = () => {
           <Temperatura data={temperaturaData} title={"Temperatura 1"} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
+          <TemperaturaAmbiente temperature={temperaturaAmbienteData} />
+        </div>
+        <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <Temperatura data={temperaturaData2} title={"Temperatura 2"} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <Ph value={phData} title={"Ph1"} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <Ph value={ph2Data} title={"Ph2"} />
-        </div>
-        <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <Co2 value={co2Data} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <Humedad value={humedadData} />
-        </div>
-        <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
-          <TemperaturaAmbiente temperature={temperaturaAmbienteData} />
+          <Ph value={ph2Data} title={"Ph2"} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <Tds data={tdsData} title={"TDS 1"} />
         </div>
         <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
+          <Humedad value={humedadData} />
+        </div>
+        <div className="bg-white shadow-md rounded-lg p-1 flex flex-col items-center justify-center h-72">
           <Tds data={tdsData2} title={"TDS 2"} />
         </div>
+              
       </div>
     </div>
   );
