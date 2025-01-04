@@ -10,10 +10,11 @@ import {
 } from "recharts";
 
 interface PhProps {
-  value: number; // Último valor de pH
+  value: number;
+  title: string;
 }
 
-const Ph: React.FC<PhProps> = ({ value }) => {
+const Ph: React.FC<PhProps> = ({ value, title }) => {
   const data = [{ name: "pH", value }];
 
   // Función para determinar el color según el pH
@@ -25,7 +26,7 @@ const Ph: React.FC<PhProps> = ({ value }) => {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Nivel de pH</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4">Nivel de {title}</h2>
       <ResponsiveContainer width="100%" height={100}>
         <BarChart layout="vertical" data={data}>
           <XAxis

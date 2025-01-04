@@ -1,13 +1,21 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FaThermometerHalf } from "react-icons/fa";
 
 export default function Home() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push("/dashboard");
+    if (email === "admin@admin.com" && password === "admin") {
+      document.cookie = "auth-token=valid; path=/";
+      router.push("/dashboard");
+    } else {
+      alert("Usuario o contraseña incorrectos");
+    }
   };
 
   return (
@@ -44,6 +52,7 @@ export default function Home() {
                   className="bg-gray-50 border border-gray-300  text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 "
                   placeholder="name@company.com"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div>
@@ -60,6 +69,7 @@ export default function Home() {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 "
                   required
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 

@@ -11,12 +11,13 @@ import {
 
 interface TdsProps {
   data: { timestamp: string; value: number }[];
+  title: string;
 }
 
-export default function Tds({ data }: TdsProps) {
+export default function Tds({ data, title }: TdsProps) {
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Nivel de TDS</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4">Nivel de {title}</h2>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart data={data}>
           <XAxis
@@ -40,8 +41,8 @@ export default function Tds({ data }: TdsProps) {
             }}
           />
           <Tooltip
-            formatter={(value: number) => value.toFixed(2)} // Muestra con 2 decimales
-            labelFormatter={(label: string) => `Hora: ${label}`} // Formato del timestamp
+            formatter={(value: number) => value.toFixed(2)}
+            labelFormatter={(label: string) => `Hora: ${label}`}
           />
           <Area
             type="monotone"
