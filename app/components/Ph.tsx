@@ -47,7 +47,7 @@ const Ph: React.FC<PhProps> = ({ value, title }) => {
         </BarChart>
       </ResponsiveContainer>
       <p className="text-lg font-semibold text-gray-700 mt-4">
-        pH: {value.toFixed(1)}
+        pH: {value?.toFixed(1)}
       </p>
     </>
   );

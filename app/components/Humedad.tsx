@@ -25,7 +25,7 @@ const Humedad = ({ value }: HumedadProps) => {
             <Cell key={`cell-${index}`} fill={COLORS[index]} />
           ))}
           <Label
-            value={`${value.toFixed(1)}%`}
+            value={`${value?.toFixed(1)}%`}
             position="center"
             className="text-xl font-bold text-gray-800"
           />

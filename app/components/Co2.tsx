@@ -46,7 +46,7 @@ const Co2: React.FC<Co2Props> = ({ value }) => {
         </BarChart>
       </ResponsiveContainer>
       <p className="text-lg font-semibold text-gray-700 mt-4">
-        Co2: {value.toFixed(2)} ppm
+        Co2: {value?.toFixed(2)} ppm
       </p>
     </>
   );

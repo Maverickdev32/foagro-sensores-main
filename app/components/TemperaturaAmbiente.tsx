@@ -50,7 +50,7 @@ const TemperaturaAmbiente: React.FC<TemperaturaAmbienteProps> = ({
         </BarChart>
       </ResponsiveContainer>
       <p className="text-lg font-semibold text-gray-700 mt-4">
-        {temperature.toFixed(1)}°C
+        {temperature?.toFixed(1)}°C
       </p>
     </>
   );
