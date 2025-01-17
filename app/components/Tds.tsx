@@ -15,6 +15,7 @@ interface TdsProps {
 }
 
 export default function Tds({ data, title }: TdsProps) {
+  const latestData = data.length > 0 ? data[data.length - 1] : { value: 0 };
   return (
     <>
       <h2 className="text-xl font-bold text-gray-800 mb-4">Nivel de {title}</h2>
@@ -52,6 +53,9 @@ export default function Tds({ data, title }: TdsProps) {
           />
         </AreaChart>
       </ResponsiveContainer>
+      <p className="text-lg font-semibold text-gray-700 mt-4">
+        TDS: {latestData.value?.toFixed(2)} µS/cm
+      </p>
     </>
   );
 }

@@ -30,8 +30,8 @@ const Co2: React.FC<Co2Props> = ({ value }) => {
         <BarChart layout="vertical" data={data}>
           <XAxis
             type="number"
-            domain={[0, 2000]} // Rango típico de CO2
-            ticks={[0, 400, 800, 1200, 1600, 2000]} // Marcas clave
+            domain={[0, 100]} // Rango típico de CO2
+            ticks={[0, 25, 50, 75, 100]} // Marcas clave
             tick={{ fontSize: 12 }}
             label={{
               value: "Nivel de CO2 (ppm)",

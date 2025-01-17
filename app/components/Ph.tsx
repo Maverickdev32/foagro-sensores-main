@@ -19,9 +19,13 @@ const Ph: React.FC<PhProps> = ({ value, title }) => {
 
   // Función para determinar el color según el pH
   const getColor = (ph: number): string => {
-    if (ph < 7) return "#ff4d4f"; // Rojo para ácido
+    if (ph < 3) return "#8B0000"; // Rojo oscuro para muy ácido
+    if (ph < 5) return "#ff4d4f"; // Rojo para ácido
+    if (ph < 7) return "#FFA500"; // Naranja para ligeramente ácido
     if (ph === 7) return "#82ca9d"; // Verde para neutral
-    return "#007bff"; // Azul para básico
+    if (ph <= 9) return "#ADD8E6"; // Azul claro para ligeramente básico
+    if (ph <= 11) return "#007bff"; // Azul para básico
+    return "#00008B"; // Azul oscuro para muy básico
   };
 
   return (
