@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const dispositivos = [
   { id: "dispositivo_1", name: "Dispositivo 1" },
@@ -68,9 +70,91 @@ export default function DashboardLayout({
   };
 
   const handleLogout = () => {
-    document.cookie =
-      "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    router.push("/");
+    const isConfirmed = confirm("¿Estás seguro de cerrar sesión?");
+    if (isConfirmed) {
+      document.cookie =
+        "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      router.push("/");
+    }
+  };
+
+  const handleExportExcel = (reportData: SensorData[]) => {
+    if (reportData.length === 0) {
+      alert("No hay datos para exportar.");
+      return;
+    }
+
+    // Mapear los datos para agregar formato
+    const formattedData = reportData.map((item) => ({
+      ID: item.id,
+      "CO2 (ppm)": item.co2.toLocaleString(),
+      "Humedad Relativa (%)": item.humedad_relativa
+        ? item.humedad_relativa + "%"
+        : "N/A",
+      PH1: item.ph1.toFixed(2),
+      PH2: item.ph2.toFixed(2),
+      "TDS1 (ppm)": item.tds1.toLocaleString(),
+      "TDS2 (ppm)": item.tds2.toLocaleString(),
+      "Temp Sensor 1 (°C)": item.temp_sensor1.toFixed(1),
+      "Temp Sensor 2 (°C)": item.temp_sensor2.toFixed(1),
+      "Temp Ambiente (°C)": item.temperatura_ambiente.toFixed(1),
+      "Fecha y Hora": new Date(item.timestamp).toLocaleString("es-PE"),
+      Dispositivo: item.dispositivo,
+    }));
+
+    // Crear hoja de Excel
+    const ws = XLSX.utils.json_to_sheet(formattedData);
+
+    // Aplicar estilos a los encabezados
+    const headerStyle = {
+      font: { bold: true, color: { rgb: "FFFFFF" } }, // Blanco
+      fill: { fgColor: { rgb: "4F81BD" } }, // Azul oscuro
+      alignment: { horizontal: "center" },
+    };
+
+    // Obtener rango de las columnas
+    const range = ws["!ref"]
+      ? XLSX.utils.decode_range(ws["!ref"])
+      : { s: { c: 0, r: 0 }, e: { c: 0, r: 0 } };
+
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellAddress = XLSX.utils.encode_col(C) + "1";
+      if (!ws[cellAddress]) continue;
+      ws[cellAddress].s = headerStyle;
+    }
+
+    // Ajustar anchos de columnas automáticamente
+    ws["!cols"] = [
+      { wch: 5 }, // ID
+      { wch: 10 }, // CO2
+      { wch: 15 }, // Humedad Relativa
+      { wch: 8 }, // PH1
+      { wch: 8 }, // PH2
+      { wch: 12 }, // TDS1
+      { wch: 12 }, // TDS2
+      { wch: 15 }, // Temp Sensor 1
+      { wch: 15 }, // Temp Sensor 2
+      { wch: 15 }, // Temp Ambiente
+      { wch: 20 }, // Fecha y Hora
+      { wch: 15 }, // Dispositivo
+    ];
+
+    // Crear libro de Excel y agregar la hoja
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Reporte de Sensores");
+
+    // Generar archivo Excel
+    const excelBuffer = XLSX.write(wb, {
+      bookType: "xlsx",
+      type: "array",
+      cellStyles: true,
+    });
+
+    const dataBlob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(dataBlob, "reporte_sensores.xlsx");
   };
 
   return (
@@ -116,46 +200,56 @@ export default function DashboardLayout({
         {loadingReport ? (
           <p className="text-center text-gray-500">Cargando datos...</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="border p-2">ID</th>
-                  <th className="border p-2">CO2</th>
-                  <th className="border p-2">Humedad Relativa</th>
-                  <th className="border p-2">PH1</th>
-                  <th className="border p-2">PH2</th>
-                  <th className="border p-2">TDS1</th>
-                  <th className="border p-2">TDS2</th>
-                  <th className="border p-2">Temp Sensor 1</th>
-                  <th className="border p-2">Temp Sensor 2</th>
-                  <th className="border p-2">Temp Ambiente</th>
-                  <th className="border p-2">Timestamp</th>
-                  <th className="border p-2">Dispositivo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reportData.map((item) => (
-                  <tr key={item.id} className="text-center">
-                    <td className="border p-2">{item.id}</td>
-                    <td className="border p-2">{item.co2}</td>
-                    <td className="border p-2">{item.humedad_relativa}</td>
-                    <td className="border p-2">{item.ph1}</td>
-                    <td className="border p-2">{item.ph2}</td>
-                    <td className="border p-2">{item.tds1}</td>
-                    <td className="border p-2">{item.tds2}</td>
-                    <td className="border p-2">{item.temp_sensor1}</td>
-                    <td className="border p-2">{item.temp_sensor2}</td>
-                    <td className="border p-2">{item.temperatura_ambiente}</td>
-                    <td className="border p-2">
-                      {new Date(item.timestamp).toLocaleTimeString()}
-                    </td>
-                    <td className="border p-2">{item.dispositivo}</td>
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300">
+                <thead className="bg-gray-200">
+                  <tr>
+                    <th className="border p-2">ID</th>
+                    <th className="border p-2">CO2</th>
+                    <th className="border p-2">Humedad Relativa</th>
+                    <th className="border p-2">PH1</th>
+                    <th className="border p-2">PH2</th>
+                    <th className="border p-2">TDS1</th>
+                    <th className="border p-2">TDS2</th>
+                    <th className="border p-2">Temp Sensor 1</th>
+                    <th className="border p-2">Temp Sensor 2</th>
+                    <th className="border p-2">Temp Ambiente</th>
+                    <th className="border p-2">Timestamp</th>
+                    <th className="border p-2">Dispositivo</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {reportData.map((item) => (
+                    <tr key={item.id} className="text-center">
+                      <td className="border p-2">{item.id}</td>
+                      <td className="border p-2">{item.co2}</td>
+                      <td className="border p-2">{item.humedad_relativa}</td>
+                      <td className="border p-2">{item.ph1}</td>
+                      <td className="border p-2">{item.ph2}</td>
+                      <td className="border p-2">{item.tds1}</td>
+                      <td className="border p-2">{item.tds2}</td>
+                      <td className="border p-2">{item.temp_sensor1}</td>
+                      <td className="border p-2">{item.temp_sensor2}</td>
+                      <td className="border p-2">
+                        {item.temperatura_ambiente}
+                      </td>
+                      <td className="border p-2">
+                        {new Date(item.timestamp).toLocaleTimeString()}
+                      </td>
+                      <td className="border p-2">{item.dispositivo}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <button
+              onClick={() => handleExportExcel(reportData)}
+              className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition w-full"
+            >
+              Exportar a Excel
+            </button>
+          </>
         )}
       </Modal>
 
