@@ -17,8 +17,8 @@ interface SensorData {
   temperatura_ambiente: number;
   humedad: number;
   humedad_relativa?: number;
-  temp_sensor1: number;
-  temp_sensor2: number;
+  tempSensor1: number;
+  tempSensor2: number;
   co2: number;
   tds1: number;
   tds2: number;
@@ -87,18 +87,18 @@ export default function DashboardLayout({
     // Mapear los datos para agregar formato
     const formattedData = reportData.map((item) => ({
       ID: item.id,
-      "CO2 (ppm)": item.co2.toLocaleString(),
+      "CO2 (ppm)": item.co2?.toLocaleString(),
       "Humedad Relativa (%)": item.humedad_relativa
         ? item.humedad_relativa + "%"
         : "N/A",
-      PH1: item.ph1.toFixed(2),
-      PH2: item.ph2.toFixed(2),
-      "TDS1 (ppm)": item.tds1.toLocaleString(),
-      "TDS2 (ppm)": item.tds2.toLocaleString(),
-      "Temp Sensor 1 (°C)": item.temp_sensor1.toFixed(1),
-      "Temp Sensor 2 (°C)": item.temp_sensor2.toFixed(1),
-      "Temp Ambiente (°C)": item.temperatura_ambiente.toFixed(1),
-      "Fecha y Hora": new Date(item.timestamp).toLocaleString("es-PE"),
+      PH1: item.ph1?.toFixed(2),
+      PH2: item.ph2?.toFixed(2),
+      "TDS1 (ppm)": item.tds1?.toLocaleString(),
+      "TDS2 (ppm)": item.tds2?.toLocaleString(),
+      "Temp Sensor 1 (°C)": item.tempSensor1?.toFixed(1),
+      "Temp Sensor 2 (°C)": item.tempSensor2?.toFixed(1),
+      "Temp Ambiente (°C)": item.temperatura_ambiente?.toFixed(1),
+      "Fecha y Hora": new Date(item.timestamp)?.toLocaleString("es-PE"),
       Dispositivo: item.dispositivo,
     }));
 
@@ -229,13 +229,13 @@ export default function DashboardLayout({
                       <td className="border p-2">{item.ph2}</td>
                       <td className="border p-2">{item.tds1}</td>
                       <td className="border p-2">{item.tds2}</td>
-                      <td className="border p-2">{item.temp_sensor1}</td>
-                      <td className="border p-2">{item.temp_sensor2}</td>
+                      <td className="border p-2">{item.tempSensor1}</td>
+                      <td className="border p-2">{item.tempSensor2}</td>
                       <td className="border p-2">
                         {item.temperatura_ambiente}
                       </td>
                       <td className="border p-2">
-                        {new Date(item.timestamp).toLocaleTimeString()}
+                        {new Date(item.timestamp)?.toLocaleTimeString()}
                       </td>
                       <td className="border p-2">{item.dispositivo}</td>
                     </tr>

@@ -22,7 +22,7 @@ export default function Temperatura({ data, title }: TemperaturaProps) {
     if (temp < 10) return "#0000FF"; // Azul para frío
     if (temp < 18) return "#00c6ff"; // Azul claro para fresco
     if (temp < 25) return "#82ca9d"; // Verde para templado
-    if (temp < 30) return "#FFFF00"; // Amarillo para cálido
+    if (temp < 30) return "#FFD700"; // Amarillo para cálido
     if (temp < 37) return "#FFA500"; // Naranja para caliente
     return "#ff4d4f"; // Rojo para muy caliente
   };
