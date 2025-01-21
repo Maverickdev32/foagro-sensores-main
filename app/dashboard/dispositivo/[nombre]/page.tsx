@@ -14,8 +14,8 @@ interface SensorData {
   temperatura_ambiente: number;
   humedad: number;
   humedad_relativa?: number;
-  temp_sensor1: number;
-  temp_sensor2: number;
+  tempSensor1: number;
+  tempSensor2: number;
   co2: number;
   tds1: number;
   tds2: number;
@@ -83,10 +83,10 @@ const DispositivoPage = () => {
                 data={[
                   {
                     timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                    value: sensorData[sensorData.length - 1]?.temp_sensor1,
+                    value: sensorData[sensorData.length - 1]?.tempSensor1,
                   },
                 ]}
-                title="Temperatura Izquierda"
+                title="Temperatura Suelo"
               />
             </div>
             <div className="bg-white shadow-md rounded-lg p-4">
@@ -101,26 +101,20 @@ const DispositivoPage = () => {
                 data={[
                   {
                     timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                    value: sensorData[sensorData.length - 1]?.temp_sensor2,
+                    value: sensorData[sensorData.length - 1]?.tempSensor2,
                   },
                 ]}
-                title="Temperatura Derecha"
+                title="Temperatura Suelo"
               />
             </div>
             <div className="bg-white shadow-md rounded-lg p-4">
-              <Ph
-                value={sensorData[sensorData.length - 1]?.ph1}
-                title="Ph Izquierdo"
-              />
+              <Ph value={sensorData[sensorData.length - 1]?.ph1} title="Ph" />
             </div>
             <div className="bg-white shadow-md rounded-lg p-4">
               <Co2 value={sensorData[sensorData.length - 1]?.mq2} />
             </div>
             <div className="bg-white shadow-md rounded-lg p-4 ">
-              <Ph
-                value={sensorData[sensorData.length - 1]?.ph2}
-                title="Ph Derecho"
-              />
+              <Ph value={sensorData[sensorData.length - 1]?.ph2} title="Ph" />
             </div>
             <div className="bg-white shadow-md rounded-lg p-4">
               <Tds
@@ -130,7 +124,7 @@ const DispositivoPage = () => {
                     value: sensorData[sensorData.length - 1]?.tds1,
                   },
                 ]}
-                title="TDS 1"
+                title="us/cm"
               />
             </div>
             {nombre !== "dispositivo_3" && (
@@ -148,7 +142,7 @@ const DispositivoPage = () => {
                     value: sensorData[sensorData.length - 1]?.tds2,
                   },
                 ]}
-                title="TDS 2"
+                title="us/cm"
               />
             </div>
           </div>
