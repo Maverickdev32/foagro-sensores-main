@@ -35,13 +35,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [reportType, setReportType] = useState<"day" | "week">("day");
   const [reportData, setReportData] = useState<SensorData[]>([]);
   const [loadingReport, setLoadingReport] = useState(false);
   const router = useRouter();
 
   const fetchReport = async (type: "day" | "week") => {
     setLoadingReport(true);
+    setReportType(type);
     let endpoint = "";
     if (type === "day") endpoint = "http://localhost:8080/sensor/find/day";
     if (type === "week") endpoint = "http://localhost:8080/sensor/find/week";
@@ -195,7 +196,9 @@ export default function DashboardLayout({
         className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto mt-20"
         overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
       >
-        <h2 className="text-xl font-bold mb-4">Últimos 10 Registros</h2>
+        <h2 className="text-xl font-bold mb-4">
+          {reportType === "day" ? "Reporte del Dia" : "Reporte de la Semana"}
+        </h2>
 
         {loadingReport ? (
           <p className="text-center text-gray-500">Cargando datos...</p>
