@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -35,38 +35,32 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sensorData, setSensorData] = useState<SensorData[]>([]);
 
   const [reportData, setReportData] = useState<SensorData[]>([]);
   const [loadingReport, setLoadingReport] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/sensor/find/all`);
-        const data: SensorData[] = await response.json();
-
-        if (Array.isArray(data)) {
-          setSensorData(data);
-        } else {
-          console.error("El backend no devolvió un array.");
-          setSensorData([]);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const handleOpenReport = () => {
+  const fetchReport = async (type: "day" | "week") => {
     setLoadingReport(true);
-    setTimeout(() => {
-      setReportData(sensorData.slice(-10));
-      setLoadingReport(false);
-      setIsModalOpen(true);
-    }, 500);
+    let endpoint = "";
+    if (type === "day") endpoint = "http://localhost:8080/sensor/find/day";
+    if (type === "week") endpoint = "http://localhost:8080/sensor/find/week";
+
+    try {
+      const response = await fetch(endpoint);
+      const data: SensorData[] = await response.json();
+      if (Array.isArray(data)) {
+        setReportData(data);
+      } else {
+        console.error("El backend no devolvió un array.");
+        setReportData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching report data:", error);
+    }
+
+    setLoadingReport(false);
+    setIsModalOpen(true);
   };
 
   const handleLogout = () => {
@@ -182,10 +176,16 @@ export default function DashboardLayout({
           Cerrar Sesión
         </button>
         <button
-          onClick={handleOpenReport}
-          className="mt-6 bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition w-full"
+          onClick={() => fetchReport("day")}
+          className="mt-2 bg-green-500 text-white px-4 py-2 rounded shadow-lg hover:bg-green-600 transition w-full"
         >
-          Reporte Últimos 10 Registros
+          Reporte del Día
+        </button>
+        <button
+          onClick={() => fetchReport("week")}
+          className="mt-2 bg-orange-500 text-white px-4 py-2 rounded shadow-lg hover:bg-orange-600 transition w-full"
+        >
+          Reporte de la Semana
         </button>
       </aside>
       <Modal
