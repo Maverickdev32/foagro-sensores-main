@@ -201,7 +201,7 @@ export default function DashboardLayout({
           <p className="text-center text-gray-500">Cargando datos...</p>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto overflow-y-auto max-h-96">
               <table className="w-full border-collapse border border-gray-300">
                 <thead className="bg-gray-200">
                   <tr>
