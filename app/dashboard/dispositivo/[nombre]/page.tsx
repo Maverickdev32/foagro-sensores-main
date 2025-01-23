@@ -68,19 +68,21 @@ const DispositivoPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
-      <div className="flex flex-row items-start justify-between w-full max-w-6xl">
+      <div className="flex flex-row items-start justify-between w-full xl:max-w-7xl 2xl:max-w-[90%]">
         <div className="w-[150px] h-[150px] flex-shrink-0 mt-36">
           <Image src="/izquierda.png" alt="logo" width={250} height={250} />
         </div>
-        <div className="flex flex-col flex-grow items-center">
+        <div className="flex flex-col flex-grow items-center w-full">
           <h1 className="text-3xl font-bold mb-4 text-center">
             {dispositivoNombre}
           </h1>
-          <fieldset className="border-2 border-green-500 shadow-md rounded-lg p-4 w-full max-w-5xl mb-6">
-            <legend className="text-lg font-semibold text-green-500 px-2 uppercase">
+
+          {/* Sensores de Ambiente */}
+          <fieldset className="border-2 border-green-500 shadow-md rounded-lg p-6 w-full">
+            <legend className="text-lg font-semibold text-green-500 px-4 uppercase">
               Sensores de Ambiente
             </legend>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               <div className="bg-white shadow-md rounded-lg p-4">
                 <TemperaturaAmbiente
                   temperature={
@@ -101,11 +103,12 @@ const DispositivoPage = () => {
             </div>
           </fieldset>
 
-          <fieldset className="border-2 border-green-500 shadow-md rounded-lg p-4 w-full max-w-5xl">
-            <legend className="text-lg font-semibold text-green-500 px-2 uppercase">
+          {/* Sensores de Suelo */}
+          <fieldset className="border-2 border-green-500 shadow-md rounded-lg p-6 w-full mt-6">
+            <legend className="text-lg font-semibold text-green-500 px-4 uppercase">
               Sensores de Suelo
             </legend>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               <div className="bg-white shadow-md rounded-lg p-4">
                 <Temperatura
                   data={[
@@ -172,5 +175,4 @@ const DispositivoPage = () => {
     </div>
   );
 };
-
 export default DispositivoPage;
