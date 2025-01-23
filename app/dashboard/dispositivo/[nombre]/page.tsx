@@ -72,80 +72,92 @@ const DispositivoPage = () => {
         <div className="w-[150px] h-[150px] flex-shrink-0 mt-36">
           <Image src="/izquierda.png" alt="logo" width={250} height={250} />
         </div>
-
         <div className="flex flex-col flex-grow items-center">
           <h1 className="text-3xl font-bold mb-4 text-center">
             {dispositivoNombre}
           </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <Temperatura
-                data={[
-                  {
-                    timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                    value: sensorData[sensorData.length - 1]?.tempSensor1,
-                  },
-                ]}
-                title="Temperatura Suelo"
-              />
-            </div>
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <TemperaturaAmbiente
-                temperature={
-                  sensorData[sensorData.length - 1]?.temperatura_ambiente
-                }
-              />
-            </div>
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <Temperatura
-                data={[
-                  {
-                    timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                    value: sensorData[sensorData.length - 1]?.tempSensor2,
-                  },
-                ]}
-                title="Temperatura Suelo"
-              />
-            </div>
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <Ph value={sensorData[sensorData.length - 1]?.ph1} title="Ph" />
-            </div>
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <Co2 value={sensorData[sensorData.length - 1]?.mq2} />
-            </div>
-            <div className="bg-white shadow-md rounded-lg p-4 ">
-              <Ph value={sensorData[sensorData.length - 1]?.ph2} title="Ph" />
-            </div>
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <Tds
-                data={[
-                  {
-                    timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                    value: sensorData[sensorData.length - 1]?.tds1,
-                  },
-                ]}
-                title="us/cm"
-              />
-            </div>
-            {nombre !== "dispositivo_3" && (
-              <div className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-center items-center">
-                <Humedad
-                  value={sensorData[sensorData.length - 1]?.humedad_relativa}
+          <fieldset className="border-2 border-green-500 shadow-md rounded-lg p-4 w-full max-w-5xl mb-6">
+            <legend className="text-lg font-semibold text-green-500 px-2 uppercase">
+              Sensores de Ambiente
+            </legend>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <TemperaturaAmbiente
+                  temperature={
+                    sensorData[sensorData.length - 1]?.temperatura_ambiente
+                  }
                 />
               </div>
-            )}
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <Tds
-                data={[
-                  {
-                    timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                    value: sensorData[sensorData.length - 1]?.tds2,
-                  },
-                ]}
-                title="us/cm"
-              />
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <Co2 value={sensorData[sensorData.length - 1]?.mq2} />
+              </div>
+              {nombre !== "dispositivo_3" && (
+                <div className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-center items-center">
+                  <Humedad
+                    value={sensorData[sensorData.length - 1]?.humedad_relativa}
+                  />
+                </div>
+              )}
             </div>
-          </div>
+          </fieldset>
+
+          <fieldset className="border-2 border-green-500 shadow-md rounded-lg p-4 w-full max-w-5xl">
+            <legend className="text-lg font-semibold text-green-500 px-2 uppercase">
+              Sensores de Suelo
+            </legend>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <Temperatura
+                  data={[
+                    {
+                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                      value: sensorData[sensorData.length - 1]?.tempSensor1,
+                    },
+                  ]}
+                  title="Temperatura Suelo"
+                />
+              </div>
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <Temperatura
+                  data={[
+                    {
+                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                      value: sensorData[sensorData.length - 1]?.tempSensor2,
+                    },
+                  ]}
+                  title="Temperatura Suelo"
+                />
+              </div>
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <Ph value={sensorData[sensorData.length - 1]?.ph1} title="Ph" />
+              </div>
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <Ph value={sensorData[sensorData.length - 1]?.ph2} title="Ph" />
+              </div>
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <Tds
+                  data={[
+                    {
+                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                      value: sensorData[sensorData.length - 1]?.tds1,
+                    },
+                  ]}
+                  title="us/cm"
+                />
+              </div>
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <Tds
+                  data={[
+                    {
+                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                      value: sensorData[sensorData.length - 1]?.tds2,
+                    },
+                  ]}
+                  title="us/cm"
+                />
+              </div>
+            </div>
+          </fieldset>
         </div>
         <div className="w-[150px] h-[150px] flex-shrink-0 mt-36">
           <Image
