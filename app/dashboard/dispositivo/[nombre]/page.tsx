@@ -233,7 +233,7 @@ const DispositivoPage = () => {
               </div>
               <div className="bg-white shadow-md rounded-lg p-4">
                 <Image
-                  src="/TDS_DERECHA.png"
+                  src="/TDS_IZQUIERDA.png"
                   alt="logo"
                   width={250}
                   height={250}
@@ -263,7 +263,7 @@ const DispositivoPage = () => {
               </div>
               <div className="bg-white shadow-md rounded-lg p-4">
                 <Image
-                  src="/TDS_IZQUIERDA.png"
+                  src="/TDS_DERECHA.png"
                   alt="logo"
                   width={250}
                   height={250}
