@@ -72,7 +72,6 @@ export default function DashboardLayout({
       router.push("/");
     }
   };
-
   const handleExportExcel = (reportData: SensorData[]) => {
     if (reportData.length === 0) {
       alert("No hay datos para exportar.");
@@ -81,30 +80,45 @@ export default function DashboardLayout({
 
     // Definir colores para cada dispositivo
     const deviceColors: Record<string, string> = {
-      dispositivo_1: "FFFF99", // Amarillo
-      dispositivo_2: "99CCFF", // Azul claro
-      dispositivo_3: "FF9999", // Rojo claro
+      dispositivo_1: "FFCCCC", // Rojo claro
+      dispositivo_2: "CCFFCC", // Verde claro
+      dispositivo_3: "CCCCFF", // Azul claro
     };
 
-    // Crear hoja de Excel
-    const ws = XLSX.utils.aoa_to_sheet([
-      [
-        "ID",
-        "CO2 (ppm)",
-        "Humedad Relativa (%)",
-        "PH1",
-        "PH2",
-        "TDS1 (ppm)",
-        "TDS2 (ppm)",
-        "Temp Sensor 1 (°C)",
-        "Temp Sensor 2 (°C)",
-        "Temp Ambiente (°C)",
-        "Fecha y Hora",
-        "Dispositivo",
-      ],
-    ]);
+    // Crear hoja de Excel con encabezados
+    const headers = [
+      "ID",
+      "CO2 (ppm)",
+      "Humedad Relativa (%)",
+      "PH1",
+      "PH2",
+      "TDS1 (ppm)",
+      "TDS2 (ppm)",
+      "Temp Sensor 1 (°C)",
+      "Temp Sensor 2 (°C)",
+      "Temp Ambiente (°C)",
+      "Fecha y Hora",
+      "Dispositivo",
+    ];
 
+    const ws = XLSX.utils.aoa_to_sheet([headers]);
+
+    // Aplicar estilos a los encabezados
+    headers.forEach((_, colIndex) => {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+      if (!ws[cellAddress]) return;
+      ws[cellAddress].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "4F81BD" } }, // Azul oscuro
+        alignment: { horizontal: "center" },
+      };
+    });
+
+    // Llenar los datos y aplicar estilos por fila
     reportData.forEach((item, rowIndex) => {
+      const rowNumber = rowIndex + 1; // Porque la primera fila es el encabezado
+      const dispositivoColor = deviceColors[item.dispositivo] || "FFFFFF"; // Blanco por defecto
+
       const row = [
         item.id,
         item.co2?.toLocaleString(),
@@ -120,53 +134,24 @@ export default function DashboardLayout({
         item.dispositivo,
       ];
 
-      XLSX.utils.sheet_add_aoa(ws, [row], { origin: rowIndex + 1 });
+      XLSX.utils.sheet_add_aoa(ws, [row], { origin: rowNumber });
 
-      // Obtener el color del dispositivo
-      const bgColor = deviceColors[item.dispositivo] || "FFFFFF"; // Blanco por defecto
-
-      // Aplicar color de fondo a cada celda de la fila
+      // Aplicar color de fondo a cada celda en la fila
       row.forEach((_, colIndex) => {
         const cellAddress = XLSX.utils.encode_cell({
-          r: rowIndex + 1,
+          r: rowNumber,
           c: colIndex,
         });
         if (!ws[cellAddress]) return;
         ws[cellAddress].s = {
-          fill: { fgColor: { rgb: bgColor } },
+          fill: { fgColor: { rgb: dispositivoColor } },
           alignment: { horizontal: "center" },
         };
       });
     });
 
-    // Aplicar estilos a los encabezados
-    const headerStyle = {
-      font: { bold: true, color: { rgb: "FFFFFF" } }, // Blanco
-      fill: { fgColor: { rgb: "4F81BD" } }, // Azul oscuro
-      alignment: { horizontal: "center" },
-    };
-
-    for (let C = 0; C < 12; ++C) {
-      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: C });
-      if (!ws[cellAddress]) continue;
-      ws[cellAddress].s = headerStyle;
-    }
-
     // Ajustar anchos de columnas automáticamente
-    ws["!cols"] = [
-      { wch: 5 }, // ID
-      { wch: 10 }, // CO2
-      { wch: 15 }, // Humedad Relativa
-      { wch: 8 }, // PH1
-      { wch: 8 }, // PH2
-      { wch: 12 }, // TDS1
-      { wch: 12 }, // TDS2
-      { wch: 15 }, // Temp Sensor 1
-      { wch: 15 }, // Temp Sensor 2
-      { wch: 15 }, // Temp Ambiente
-      { wch: 20 }, // Fecha y Hora
-      { wch: 15 }, // Dispositivo
-    ];
+    ws["!cols"] = headers.map(() => ({ wch: 15 }));
 
     // Crear libro de Excel y agregar la hoja
     const wb = XLSX.utils.book_new();
