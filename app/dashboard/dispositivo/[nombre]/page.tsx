@@ -164,110 +164,112 @@ const DispositivoPage = () => {
             <legend className="text-lg font-semibold text-green-500 px-4 uppercase">
               Sensores de Suelo
             </legend>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Image
-                  src="/TEMP_IZQUIERDA.png"
-                  alt="logo"
-                  width={250}
-                  height={250}
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Temperatura
-                  data={[
-                    {
-                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                      value: sensorData[sensorData.length - 1]?.tempSensor1,
-                    },
-                  ]}
-                  title="Temperatura Suelo Izquierda"
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Temperatura
-                  data={[
-                    {
-                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                      value: sensorData[sensorData.length - 1]?.tempSensor2,
-                    },
-                  ]}
-                  title="Temperatura Suelo Derecha"
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Image
-                  src="/TEMP_DERECHA.png"
-                  alt="logo"
-                  width={250}
-                  height={250}
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Image
-                  src="/PH_IZQUIERDA.png"
-                  alt="logo"
-                  width={250}
-                  height={250}
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Ph
-                  value={sensorData[sensorData.length - 1]?.ph1}
-                  title="Ph Izquierdo"
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Ph
-                  value={sensorData[sensorData.length - 1]?.ph2}
-                  title="Ph Derecho"
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Image
-                  src="/PH_DERECHA.png"
-                  alt="logo"
-                  width={250}
-                  height={250}
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Image
-                  src="/TDS_IZQUIERDA.png"
-                  alt="logo"
-                  width={250}
-                  height={250}
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Tds
-                  data={[
-                    {
-                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                      value: sensorData[sensorData.length - 1]?.tds1,
-                    },
-                  ]}
-                  title="us/cm Izquierdo"
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Tds
-                  data={[
-                    {
-                      timestamp: sensorData[sensorData.length - 1]?.timestamp,
-                      value: sensorData[sensorData.length - 1]?.tds2,
-                    },
-                  ]}
-                  title="us/cm Derecho"
-                />
-              </div>
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <Image
-                  src="/TDS_DERECHA.png"
-                  alt="logo"
-                  width={250}
-                  height={250}
-                />
+            <div className="flex flex-col items-center w-full space-y-6 ">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Image
+                    src="/TEMP_IZQUIERDA.png"
+                    alt="logo"
+                    width={250}
+                    height={250}
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Temperatura
+                    data={[
+                      {
+                        timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                        value: sensorData[sensorData.length - 1]?.tempSensor1,
+                      },
+                    ]}
+                    title="Temperatura Suelo Izquierda"
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Temperatura
+                    data={[
+                      {
+                        timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                        value: sensorData[sensorData.length - 1]?.tempSensor2,
+                      },
+                    ]}
+                    title="Temperatura Suelo Derecha"
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Image
+                    src="/TEMP_DERECHA.png"
+                    alt="logo"
+                    width={250}
+                    height={250}
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Image
+                    src="/PH_IZQUIERDA.png"
+                    alt="logo"
+                    width={250}
+                    height={250}
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Ph
+                    value={sensorData[sensorData.length - 1]?.ph1}
+                    title="Ph Izquierdo"
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Ph
+                    value={sensorData[sensorData.length - 1]?.ph2}
+                    title="Ph Derecho"
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Image
+                    src="/PH_DERECHA.png"
+                    alt="logo"
+                    width={250}
+                    height={250}
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Image
+                    src="/TDS_IZQUIERDA.png"
+                    alt="logo"
+                    width={250}
+                    height={250}
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Tds
+                    data={[
+                      {
+                        timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                        value: sensorData[sensorData.length - 1]?.tds1,
+                      },
+                    ]}
+                    title="us/cm Izquierdo"
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Tds
+                    data={[
+                      {
+                        timestamp: sensorData[sensorData.length - 1]?.timestamp,
+                        value: sensorData[sensorData.length - 1]?.tds2,
+                      },
+                    ]}
+                    title="us/cm Derecho"
+                  />
+                </div>
+                <div className="bg-white shadow-md rounded-lg p-4">
+                  <Image
+                    src="/TDS_DERECHA.png"
+                    alt="logo"
+                    width={250}
+                    height={250}
+                  />
+                </div>
               </div>
               <div className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-center items-center">
                 <Humedad
