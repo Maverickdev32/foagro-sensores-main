@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import Modal from "react-modal";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 
 const dispositivos = [
@@ -72,20 +72,31 @@ export default function DashboardLayout({
       router.push("/");
     }
   };
+
   const handleExportExcel = (reportData: SensorData[]) => {
-    if (reportData.length === 0) {
-      alert("No hay datos para exportar.");
-      return;
-    }
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Reporte de Sensores");
 
     // Definir colores para cada dispositivo
-    const deviceColors: Record<string, string> = {
-      dispositivo_1: "FFCCCC", // Rojo claro
-      dispositivo_2: "CCFFCC", // Verde claro
-      dispositivo_3: "CCCCFF", // Azul claro
+    const deviceColors = {
+      dispositivo_1: {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFCCCC" },
+      }, // Rojo claro
+      dispositivo_2: {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "CCFFCC" },
+      }, // Verde claro
+      dispositivo_3: {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "CCCCFF" },
+      }, // Azul claro
     };
 
-    // Crear hoja de Excel con encabezados
+    // Agregar encabezados
     const headers = [
       "ID",
       "CO2 (ppm)",
@@ -101,74 +112,50 @@ export default function DashboardLayout({
       "Dispositivo",
     ];
 
-    const ws = XLSX.utils.aoa_to_sheet([headers]);
-
-    // Aplicar estilos a los encabezados
-    headers.forEach((_, colIndex) => {
-      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
-      if (!ws[cellAddress]) return;
-      ws[cellAddress].s = {
-        font: { bold: true, color: { rgb: "FFFFFF" } },
-        fill: { fgColor: { rgb: "4F81BD" } }, // Azul oscuro
-        alignment: { horizontal: "center" },
-      };
+    worksheet.addRow(headers).eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: "FFFFFF" } }; // Blanco
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "4F81BD" },
+      }; // Azul oscuro
     });
 
-    // Llenar los datos y aplicar estilos por fila
-    reportData.forEach((item, rowIndex) => {
-      const rowNumber = rowIndex + 1; // Porque la primera fila es el encabezado
-      const dispositivoColor = deviceColors[item.dispositivo] || "FFFFFF"; // Blanco por defecto
-
-      const row = [
+    // Agregar datos con colores
+    reportData.forEach((item) => {
+      const row = worksheet.addRow([
         item.id,
-        item.co2?.toLocaleString(),
-        item.humedad_relativa ? item.humedad_relativa + "%" : "N/A",
-        item.ph1?.toFixed(2),
-        item.ph2?.toFixed(2),
-        item.tds1?.toLocaleString(),
-        item.tds2?.toLocaleString(),
-        item.tempSensor1?.toFixed(1),
-        item.tempSensor2?.toFixed(1),
-        item.temperatura_ambiente?.toFixed(1),
-        new Date(item.timestamp)?.toLocaleString("es-PE"),
+        item.co2,
+        item.humedad_relativa ? `${item.humedad_relativa}%` : "N/A",
+        item.ph1,
+        item.ph2,
+        item.tds1,
+        item.tds2,
+        item.tempSensor1,
+        item.tempSensor2,
+        item.temperatura_ambiente,
+        new Date(item.timestamp).toLocaleString("es-PE"),
         item.dispositivo,
-      ];
+      ]);
 
-      XLSX.utils.sheet_add_aoa(ws, [row], { origin: rowNumber });
-
-      // Aplicar color de fondo a cada celda en la fila
-      row.forEach((_, colIndex) => {
-        const cellAddress = XLSX.utils.encode_cell({
-          r: rowNumber,
-          c: colIndex,
-        });
-        if (!ws[cellAddress]) return;
-        ws[cellAddress].s = {
-          fill: { fgColor: { rgb: dispositivoColor } },
-          alignment: { horizontal: "center" },
-        };
+      // Aplicar color de fondo a toda la fila según el dispositivo
+      const bgColor = deviceColors[item.dispositivo] || {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFFFFF" },
+      }; // Blanco por defecto
+      row.eachCell((cell) => {
+        cell.fill = bgColor;
       });
     });
 
-    // Ajustar anchos de columnas automáticamente
-    ws["!cols"] = headers.map(() => ({ wch: 15 }));
-
-    // Crear libro de Excel y agregar la hoja
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Reporte de Sensores");
-
-    // Generar archivo Excel
-    const excelBuffer = XLSX.write(wb, {
-      bookType: "xlsx",
-      type: "array",
-      cellStyles: true,
+    // Generar el archivo Excel y descargarlo
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      saveAs(blob, "reporte_sensores.xlsx");
     });
-
-    const dataBlob = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-
-    saveAs(dataBlob, "reporte_sensores.xlsx");
   };
 
   return (
