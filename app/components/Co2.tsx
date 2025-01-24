@@ -14,6 +14,7 @@ interface Co2Props {
 }
 
 const Co2: React.FC<Co2Props> = ({ value }) => {
+  // Datos para el gráfico de barras
   const data = [{ name: "CO2", value }];
 
   // Función para determinar el color según el nivel de CO2
@@ -25,7 +26,9 @@ const Co2: React.FC<Co2Props> = ({ value }) => {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Nivel de CO2</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+        Nivel de CO2
+      </h2>
       <ResponsiveContainer width="100%" height={100}>
         <BarChart layout="vertical" data={data}>
           <XAxis

@@ -29,7 +29,9 @@ export default function Temperatura({ data, title }: TemperaturaProps) {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">{title}</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+        {title}
+      </h2>
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={data}>
           <XAxis

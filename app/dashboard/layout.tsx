@@ -79,26 +79,65 @@ export default function DashboardLayout({
       return;
     }
 
-    // Mapear los datos para agregar formato
-    const formattedData = reportData.map((item) => ({
-      ID: item.id,
-      "CO2 (ppm)": item.co2?.toLocaleString(),
-      "Humedad Relativa (%)": item.humedad_relativa
-        ? item.humedad_relativa + "%"
-        : "N/A",
-      PH1: item.ph1?.toFixed(2),
-      PH2: item.ph2?.toFixed(2),
-      "TDS1 (ppm)": item.tds1?.toLocaleString(),
-      "TDS2 (ppm)": item.tds2?.toLocaleString(),
-      "Temp Sensor 1 (°C)": item.tempSensor1?.toFixed(1),
-      "Temp Sensor 2 (°C)": item.tempSensor2?.toFixed(1),
-      "Temp Ambiente (°C)": item.temperatura_ambiente?.toFixed(1),
-      "Fecha y Hora": new Date(item.timestamp)?.toLocaleString("es-PE"),
-      Dispositivo: item.dispositivo,
-    }));
+    // Definir colores para cada dispositivo
+    const deviceColors: Record<string, string> = {
+      dispositivo_1: "FFFF99", // Amarillo
+      dispositivo_2: "99CCFF", // Azul claro
+      dispositivo_3: "FF9999", // Rojo claro
+    };
 
     // Crear hoja de Excel
-    const ws = XLSX.utils.json_to_sheet(formattedData);
+    const ws = XLSX.utils.aoa_to_sheet([
+      [
+        "ID",
+        "CO2 (ppm)",
+        "Humedad Relativa (%)",
+        "PH1",
+        "PH2",
+        "TDS1 (ppm)",
+        "TDS2 (ppm)",
+        "Temp Sensor 1 (°C)",
+        "Temp Sensor 2 (°C)",
+        "Temp Ambiente (°C)",
+        "Fecha y Hora",
+        "Dispositivo",
+      ],
+    ]);
+
+    reportData.forEach((item, rowIndex) => {
+      const row = [
+        item.id,
+        item.co2?.toLocaleString(),
+        item.humedad_relativa ? item.humedad_relativa + "%" : "N/A",
+        item.ph1?.toFixed(2),
+        item.ph2?.toFixed(2),
+        item.tds1?.toLocaleString(),
+        item.tds2?.toLocaleString(),
+        item.tempSensor1?.toFixed(1),
+        item.tempSensor2?.toFixed(1),
+        item.temperatura_ambiente?.toFixed(1),
+        new Date(item.timestamp)?.toLocaleString("es-PE"),
+        item.dispositivo,
+      ];
+
+      XLSX.utils.sheet_add_aoa(ws, [row], { origin: rowIndex + 1 });
+
+      // Obtener el color del dispositivo
+      const bgColor = deviceColors[item.dispositivo] || "FFFFFF"; // Blanco por defecto
+
+      // Aplicar color de fondo a cada celda de la fila
+      row.forEach((_, colIndex) => {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex + 1,
+          c: colIndex,
+        });
+        if (!ws[cellAddress]) return;
+        ws[cellAddress].s = {
+          fill: { fgColor: { rgb: bgColor } },
+          alignment: { horizontal: "center" },
+        };
+      });
+    });
 
     // Aplicar estilos a los encabezados
     const headerStyle = {
@@ -107,13 +146,8 @@ export default function DashboardLayout({
       alignment: { horizontal: "center" },
     };
 
-    // Obtener rango de las columnas
-    const range = ws["!ref"]
-      ? XLSX.utils.decode_range(ws["!ref"])
-      : { s: { c: 0, r: 0 }, e: { c: 0, r: 0 } };
-
-    for (let C = range.s.c; C <= range.e.c; ++C) {
-      const cellAddress = XLSX.utils.encode_col(C) + "1";
+    for (let C = 0; C < 12; ++C) {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: C });
       if (!ws[cellAddress]) continue;
       ws[cellAddress].s = headerStyle;
     }
