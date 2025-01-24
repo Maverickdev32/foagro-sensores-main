@@ -78,11 +78,11 @@ export default function DashboardLayout({
       return;
     }
 
-    // Definir colores como texto (porque no podemos aplicarlos directamente)
+    // Definir colores para cada dispositivo
     const deviceColors: Record<string, string> = {
-      dispositivo_1: "Rojo Claro",
-      dispositivo_2: "Verde Claro",
-      dispositivo_3: "Azul Claro",
+      dispositivo_1: "FFCCCC", // Rojo claro
+      dispositivo_2: "CCFFCC", // Verde claro
+      dispositivo_3: "CCCCFF", // Azul claro
     };
 
     // Crear hoja de Excel con encabezados
@@ -99,14 +99,26 @@ export default function DashboardLayout({
       "Temp Ambiente (°C)",
       "Fecha y Hora",
       "Dispositivo",
-      "Color (Formato Condicional)", // Nueva columna
     ];
 
     const ws = XLSX.utils.aoa_to_sheet([headers]);
 
-    // Llenar los datos agregando la columna de color
+    // Aplicar estilos a los encabezados
+    headers.forEach((_, colIndex) => {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+      if (!ws[cellAddress]) return;
+      ws[cellAddress].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "4F81BD" } }, // Azul oscuro
+        alignment: { horizontal: "center" },
+      };
+    });
+
+    // Llenar los datos y aplicar estilos por fila
     reportData.forEach((item, rowIndex) => {
-      const colorTexto = deviceColors[item.dispositivo] || "Sin color";
+      const rowNumber = rowIndex + 1; // Porque la primera fila es el encabezado
+      const dispositivoColor = deviceColors[item.dispositivo] || "FFFFFF"; // Blanco por defecto
+
       const row = [
         item.id,
         item.co2?.toLocaleString(),
@@ -120,14 +132,26 @@ export default function DashboardLayout({
         item.temperatura_ambiente?.toFixed(1),
         new Date(item.timestamp)?.toLocaleString("es-PE"),
         item.dispositivo,
-        colorTexto, // Agregar la columna con el color como texto
       ];
 
-      XLSX.utils.sheet_add_aoa(ws, [row], { origin: rowIndex + 1 });
+      XLSX.utils.sheet_add_aoa(ws, [row], { origin: rowNumber });
+
+      // Aplicar color de fondo a cada celda en la fila
+      row.forEach((_, colIndex) => {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowNumber,
+          c: colIndex,
+        });
+        if (!ws[cellAddress]) return;
+        ws[cellAddress].s = {
+          fill: { fgColor: { rgb: dispositivoColor } },
+          alignment: { horizontal: "center" },
+        };
+      });
     });
 
     // Ajustar anchos de columnas automáticamente
-    ws["!cols"] = headers.map(() => ({ wch: 20 }));
+    ws["!cols"] = headers.map(() => ({ wch: 15 }));
 
     // Crear libro de Excel y agregar la hoja
     const wb = XLSX.utils.book_new();
@@ -137,6 +161,7 @@ export default function DashboardLayout({
     const excelBuffer = XLSX.write(wb, {
       bookType: "xlsx",
       type: "array",
+      cellStyles: true,
     });
 
     const dataBlob = new Blob([excelBuffer], {
@@ -144,10 +169,6 @@ export default function DashboardLayout({
     });
 
     saveAs(dataBlob, "reporte_sensores.xlsx");
-
-    alert(
-      "¡Archivo generado! Usa formato condicional en Excel para aplicar colores."
-    );
   };
 
   return (
