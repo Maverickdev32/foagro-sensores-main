@@ -30,7 +30,9 @@ const Ph: React.FC<PhProps> = ({ value, title }) => {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Nivel de {title}</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+        Nivel de {title}
+      </h2>
       <ResponsiveContainer width="100%" height={100}>
         <BarChart layout="vertical" data={data}>
           <XAxis

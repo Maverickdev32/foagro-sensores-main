@@ -4,8 +4,9 @@ import { PieChart, Pie, Cell, Label } from "recharts";
 
 interface HumedadProps {
   value?: number; // Último valor de humedad
+  name: string; // Nombre del sensor
 }
-const Humedad = ({ value }: HumedadProps) => {
+const Humedad = ({ value, name }: HumedadProps) => {
   const data = [{ value: value ?? 0 }, { value: 100 - (value ?? 0) }];
   const getColor = (humedad: number): string => {
     if (humedad < 40) return "#0000FF"; // Azul para humedad baja
@@ -15,7 +16,9 @@ const Humedad = ({ value }: HumedadProps) => {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Humedad</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+        {name}
+      </h2>
       <PieChart width={200} height={200}>
         <Pie
           data={data}

@@ -30,7 +30,7 @@ const TemperaturaAmbiente: React.FC<TemperaturaAmbienteProps> = ({
 
   return (
     <>
-      <h2 className="text-xl font-bold text-gray-800 mb-4">
+      <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
         Temperatura Ambiente
       </h2>
       <ResponsiveContainer width={120} height={200}>
