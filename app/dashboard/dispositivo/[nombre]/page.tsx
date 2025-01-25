@@ -146,7 +146,7 @@ const DispositivoPage = () => {
 
               <div className="bg-white shadow-md rounded-lg p-4">
                 <Image
-                  src="/izquierda.png"
+                  src="/CO2_TEMPERATURA.png"
                   alt="logo"
                   width={250}
                   height={250}
