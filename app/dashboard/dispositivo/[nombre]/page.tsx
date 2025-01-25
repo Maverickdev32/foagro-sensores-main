@@ -128,7 +128,7 @@ const DispositivoPage = () => {
               <div className="bg-white shadow-md rounded-lg p-4">
                 <TemperaturaAmbiente
                   temperature={
-                    sensorData[sensorData.length - 1]?.temperatura_ambiente
+                    humedadAll[humedadAll.length - 1]?.temperatura_ambiente
                   }
                 />
               </div>
@@ -178,7 +178,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tempSensor1,
                       },
                     ]}
-                    title="Temperatura Suelo Izquierda"
+                    title="Temperatura Suelo"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -189,7 +189,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tempSensor2,
                       },
                     ]}
-                    title="Temperatura Suelo Derecha"
+                    title="Temperatura Suelo"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -211,13 +211,13 @@ const DispositivoPage = () => {
                 <div className="bg-white shadow-md rounded-lg p-4">
                   <Ph
                     value={sensorData[sensorData.length - 1]?.ph1}
-                    title="Ph Izquierdo"
+                    title="Ph"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
                   <Ph
                     value={sensorData[sensorData.length - 1]?.ph2}
-                    title="Ph Derecho"
+                    title="Ph"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -244,7 +244,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tds1,
                       },
                     ]}
-                    title="us/cm Izquierdo"
+                    title="us/cm"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -255,7 +255,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tds2,
                       },
                     ]}
-                    title="us/cm Derecho"
+                    title="us/cm"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
