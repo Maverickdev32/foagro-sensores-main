@@ -1,8 +1,8 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaThermometerHalf } from "react-icons/fa";
 
 export default function Home() {
   const router = useRouter();
@@ -25,8 +25,7 @@ export default function Home() {
           href="#"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 "
         >
-          <FaThermometerHalf />
-          Laboratorio
+          <Image src="/Logoempresa.png" alt="logo" width={250} height={250} />
         </Link>
         <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  ">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

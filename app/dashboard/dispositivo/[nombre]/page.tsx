@@ -178,7 +178,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tempSensor1,
                       },
                     ]}
-                    title="Temperatura Suelo"
+                    title="Temperatura Suelo Izquierdo"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -189,7 +189,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tempSensor2,
                       },
                     ]}
-                    title="Temperatura Suelo"
+                    title="Temperatura Suelo Derecho"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -211,13 +211,13 @@ const DispositivoPage = () => {
                 <div className="bg-white shadow-md rounded-lg p-4">
                   <Ph
                     value={sensorData[sensorData.length - 1]?.ph1}
-                    title="Ph"
+                    title="Ph Izquierdo"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
                   <Ph
                     value={sensorData[sensorData.length - 1]?.ph2}
-                    title="Ph"
+                    title="Ph Derecho"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -244,7 +244,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tds1,
                       },
                     ]}
-                    title="us/cm"
+                    title="us/cm Izquierdo"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -255,7 +255,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tds2,
                       },
                     ]}
-                    title="us/cm"
+                    title="us/cm Derecho"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
