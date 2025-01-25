@@ -6,6 +6,7 @@ import { useState } from "react";
 import Modal from "react-modal";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
+import Image from "next/image";
 
 const dispositivos = [
   { id: "dispositivo_1", name: "Dispositivo 1" },
@@ -164,8 +165,10 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen flex bg-gray-100">
       {/* Barra lateral con dispositivos */}
-      <aside className="w-1/4 bg-white shadow-lg p-6">
-        <h2 className="text-xl font-bold mb-4">Dispositivos</h2>
+      <aside className="w-1/4 bg-white shadow-lg p-6 flex flex-col ">
+        <div className="flex items-center justify-center my-6">
+          <Image src="/Logoempresa.png" alt="logo" width={200} height={200} />
+        </div>
         <nav className="flex flex-col gap-4">
           {dispositivos.map((device) => (
             <Link

@@ -128,7 +128,7 @@ const DispositivoPage = () => {
               <div className="bg-white shadow-md rounded-lg p-4">
                 <TemperaturaAmbiente
                   temperature={
-                    sensorData[sensorData.length - 1]?.temperatura_ambiente
+                    humedadAll[humedadAll.length - 1]?.temperatura_ambiente
                   }
                 />
               </div>
@@ -146,7 +146,7 @@ const DispositivoPage = () => {
 
               <div className="bg-white shadow-md rounded-lg p-4">
                 <Image
-                  src="/izquierda.png"
+                  src="/CO2_TEMPERATURA.png"
                   alt="logo"
                   width={250}
                   height={250}
@@ -178,7 +178,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tempSensor1,
                       },
                     ]}
-                    title="Temperatura Suelo Izquierda"
+                    title="Temperatura Suelo Izquierdo"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -189,7 +189,7 @@ const DispositivoPage = () => {
                         value: sensorData[sensorData.length - 1]?.tempSensor2,
                       },
                     ]}
-                    title="Temperatura Suelo Derecha"
+                    title="Temperatura Suelo Derecho"
                   />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-4">
