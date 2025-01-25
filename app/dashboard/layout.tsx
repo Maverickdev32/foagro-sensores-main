@@ -39,13 +39,14 @@ export default function DashboardLayout({
   const [reportData, setReportData] = useState<SensorData[]>([]);
   const [loadingReport, setLoadingReport] = useState(false);
   const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchReport = async (type: "day" | "week") => {
     setLoadingReport(true);
     setReportType(type);
     let endpoint = "";
-    if (type === "day") endpoint = "http://localhost:8080/sensor/find/day";
-    if (type === "week") endpoint = "http://localhost:8080/sensor/find/week";
+    if (type === "day") endpoint = `${apiUrl}/sensor/find/day`;
+    if (type === "week") endpoint = `${apiUrl}/sensor/find/week`;
 
     try {
       const response = await fetch(endpoint);
@@ -78,7 +79,7 @@ export default function DashboardLayout({
     const worksheet = workbook.addWorksheet("Reporte de Sensores");
 
     // Definir colores para cada dispositivo
-    const deviceColors = {
+    const deviceColors: { [key: string]: ExcelJS.FillPattern } = {
       dispositivo_1: {
         type: "pattern",
         pattern: "solid",
@@ -139,7 +140,9 @@ export default function DashboardLayout({
       ]);
 
       // Aplicar color de fondo a toda la fila según el dispositivo
-      const bgColor = deviceColors[item.dispositivo] || {
+      const bgColor = deviceColors[
+        item.dispositivo as keyof typeof deviceColors
+      ] || {
         type: "pattern",
         pattern: "solid",
         fgColor: { argb: "FFFFFF" },

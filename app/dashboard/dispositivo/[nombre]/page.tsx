@@ -32,12 +32,12 @@ const DispositivoPage = () => {
   const [humedadAll, setHumedadAll] = useState<SensorData[]>([]);
   const [humedadSueloAll, setHumedadSueloAll] = useState<SensorData[]>([]);
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/sensor/find/${nombre}`
-        );
+        const response = await fetch(`${apiUrl}/sensor/find/${nombre}`);
         const data: SensorData[] = await response.json();
 
         if (Array.isArray(data)) {
@@ -59,9 +59,7 @@ const DispositivoPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/sensor/find/dispositivo_1`
-        );
+        const response = await fetch(`${apiUrl}/sensor/find/dispositivo_1`);
         const data: SensorData[] = await response.json();
 
         if (Array.isArray(data)) {
@@ -82,9 +80,7 @@ const DispositivoPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/sensor/find/dispositivo_4`
-        );
+        const response = await fetch(`${apiUrl}/sensor/find/dispositivo_4`);
         const data: SensorData[] = await response.json();
 
         if (Array.isArray(data)) {
